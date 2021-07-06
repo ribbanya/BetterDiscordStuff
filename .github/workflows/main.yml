@@ -67,9 +67,8 @@ jobs:
     steps:
       - name: install discord
         run: >-
-          wget -qO- https://discord.com/api/download?platform=linux&format=tar.gz
-          | 7z x -si -tgzip -so
-          | sudo 7z x -si -ttar -o/opt
+          curl --fail -L "https://discord.com/api/download?platform=linux&format=tar.gz"
+          | sudo tar -xz --directory /opt
           && sudo ln -sf /opt/Discord/Discord /usr/bin/Discord
 
       - name: run discord (no way this works)
