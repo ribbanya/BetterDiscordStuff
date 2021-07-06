@@ -1,6 +1,5 @@
-name: Autobuild Plugins
+name: build, test, publish
 
-# Controls when the action will run.
 on:
   push:
     branches:
@@ -23,7 +22,7 @@ jobs:
 
     steps:
       - name: clean working directory
-        run: rm -rf /home/runner/work/${{ github.repository }}
+        run: rm -rf ~/work/${{ github.repository }}
 
       - name: checkout code
         uses: actions/checkout@v2
@@ -60,10 +59,33 @@ jobs:
           path: .
           retention-days: 1
 
+  test:
+    name: test plugins
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: install discord
+        run: >-
+          wget -qO- https://discord.com/api/download?platform=linux&format=tar.gz
+          | 7z x -si -tgzip -so
+          | sudo 7z x -si -ttar -o/opt
+          && sudo ln -sf /opt/Discord/Discord /usr/bin/Discord
+
+      - name: run discord (no way this works)
+        run: /usr/bin/Discord/Discord
+
+      - name: uninstall discord
+        if: ${{ always() }}
+        run: |
+          rm -r ~/.config/discord
+          sudo rm -rf /opt/Discord
+          sudo rm /usr/bin/Discord
+
   publish:
     name: publish plugins
     runs-on: ubuntu-latest
-    needs: build
+    needs: test
     if: ${{ 'refs/heads/development' == github.ref }}
 
     steps:
