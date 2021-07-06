@@ -72,12 +72,12 @@ jobs:
           && sudo ln -sf /opt/Discord/Discord /usr/bin/Discord
 
       - name: run discord (no way this works)
-        run: /usr/bin/Discord/Discord
+        run: /usr/bin/Discord
 
       - name: uninstall discord
         if: ${{ always() }}
         run: |
-          rm -r ~/.config/discord
+          rm -rf ~/.config/discord
           sudo rm -rf /opt/Discord
           sudo rm /usr/bin/Discord
 
