@@ -65,6 +65,11 @@ jobs:
     needs: build
 
     steps:
+      - name: setup nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+
       - name: install discord
         run: >-
           curl --fail -L "https://discord.com/api/download?platform=linux&format=tar.gz"
