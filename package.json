@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Strencher/BetterDiscordStuff#readme",
   "devDependencies": {
-    "@kyza/bdbuilder": "^1.2.2"
+    "@kyza/bdbuilder": "^1.2.2",
+    "xvfb-maybe": "^0.2.1"
   }
 }

@@ -71,8 +71,11 @@ jobs:
           | sudo tar -xz --directory /opt
           && sudo ln -sf /opt/Discord/Discord /usr/bin/Discord
 
+      # https://stackoverflow.com/questions/60304251#61043049
+      # https://www.electronjs.org/docs/tutorial/testing-on-headless-ci
       - name: run discord (no way this works)
-        run: /usr/bin/Discord
+        run: npm exec -- xvfb-maybe /usr/bin/Discord
+        timeout-minutes: 3
         env:
           ELECTRON_ENABLE_LOGGING: true
           ELECTRON_ENABLE_STACK_DUMPING: true
