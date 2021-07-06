@@ -27,7 +27,6 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v2
         with:
-          submodules: recursive
           fetch-depth: 0
 
       - name: retrieve latest bdbuilder version
@@ -65,6 +64,9 @@ jobs:
     needs: build
 
     steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
       - name: setup nodejs
         uses: actions/setup-node@v2
         with:
