@@ -72,6 +72,11 @@ jobs:
         with:
           node-version: 16.x
 
+      - name: npm i
+        run: |
+          echo '//npm.pkg.github.com/:_authToken=${{ secrets.GH_NPM_TOKEN }}' >> .npmrc
+          npm i
+
       - name: install discord
         run: >-
           curl --fail -L "https://discord.com/api/download?platform=linux&format=tar.gz"

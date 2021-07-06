@@ -18,6 +18,7 @@ async function downloadAsar() {
 
     const resp = await downloadFile(downloadUrl);
     await fs.promises.writeFile(asarPath, resp.body);
+    console.log("✅ Package downloaded");
   }
   catch (err) {
     console.error(`❌ Failed to download package ${downloadUrl}`);
@@ -28,7 +29,6 @@ async function downloadAsar() {
 
 downloadAsar()
 .then(() => {
-  console.log("✅ Package downloaded");
   process.exit(0);
 })
 .catch(() => {
