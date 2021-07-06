@@ -60,7 +60,7 @@ jobs:
           retention-days: 1
 
   test:
-    name: test plugins
+    name: test plugins (on *stable* discord)
     runs-on: ubuntu-latest
     needs: build
 
@@ -76,11 +76,30 @@ jobs:
           | sudo tar -xz --directory /opt
           && sudo ln -sf /opt/Discord/Discord /usr/bin/Discord
 
-      # https://stackoverflow.com/questions/60304251#61043049
-      # https://www.electronjs.org/docs/tutorial/testing-on-headless-ci
-      - name: run discord (no way this works)
-        run: npm exec -- xvfb-maybe /usr/bin/Discord
-        timeout-minutes: 3
+      - name: download discord_desktop_core
+        run: npm exec -- xvfb-maybe /usr/bin/Discord 2>&1 | tee module-download.log
+        timeout-minutes: 1
+        continue-on-error: true
+        env:
+          ELECTRON_ENABLE_LOGGING: true
+          ELECTRON_ENABLE_STACK_DUMPING: true
+          ELECTRON_LOG_ASAR_READS: true
+
+      - name: install BetterDiscord
+        run: |
+          DISCORD_HOST=$(grep -m 1 ^Discord module-download.log | cut -d ' ' -f 2)
+          echo 'require("~/.config/BetterDiscord/data/betterdiscord.asar");module.exports=require("./core.asar");' \
+            > '~/.config/discord/'"$DISCORD_HOST"'/modules/discord_desktop_core/index.js'
+          echo '✅ Injection successful'
+          .github/workflows/download-bd ~/.config/BetterDiscord/data/betterdiscord.asar
+          mkdir -p ~/.config/BetterDiscord/data/stable/
+          echo '{ "general": { "download": false } }' > ~/.config/BetterDiscord/data/stable/emotes.json
+          echo '✅ Emotes download disabled'
+
+      - name: run discord
+        run: npm exec -- xvfb-maybe /usr/bin/Discord 2>&1 | tee discord.log
+        timeout-minutes: 1
+        continue-on-error: true
         env:
           ELECTRON_ENABLE_LOGGING: true
           ELECTRON_ENABLE_STACK_DUMPING: true
