@@ -50,7 +50,7 @@ jobs:
           .github/workflows/run-bdbuilder
           "--trigger=${{ github.event_name }}"
           "--plugin=${{ github.event.inputs.plugin }}"
-          ${{ steps.files.outputs.all }}
+          ${{ steps.files.outputs.all }} BetterBannedUsers
 
       - name: stage build
         uses: actions/upload-artifact@v2
@@ -73,6 +73,10 @@ jobs:
 
       - name: run discord (no way this works)
         run: /usr/bin/Discord
+        env:
+          ELECTRON_ENABLE_LOGGING: true
+          ELECTRON_ENABLE_STACK_DUMPING: true
+          ELECTRON_LOG_ASAR_READS: true
 
       - name: uninstall discord
         if: ${{ always() }}
