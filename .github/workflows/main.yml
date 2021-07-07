@@ -98,8 +98,8 @@ jobs:
           echo 'require("/home/runner/.config/BetterDiscord/data/betterdiscord.asar");module.exports=require("./core.asar");' \
             > '/home/runner/.config/discord/'"$DISCORD_HOST"'/modules/discord_desktop_core/index.js'
           echo '✅ Injection successful'
-          .github/workflows/download-bd /home/runner/.config/BetterDiscord/data/betterdiscord.asar
           mkdir -p /home/runner/.config/BetterDiscord/data/stable/
+          .github/workflows/download-bd /home/runner/.config/BetterDiscord/data/betterdiscord.asar
           echo '{ "general": { "download": false } }' > /home/runner/.config/BetterDiscord/data/stable/emotes.json
           echo '✅ Emotes download disabled'
 
@@ -114,9 +114,9 @@ jobs:
       - name: uninstall discord
         if: ${{ always() }}
         run: |
-          rm -rf /home/runner/.config/discord
-          sudo rm -rf /opt/Discord
-          sudo rm /usr/bin/Discord
+          rm -rfdv /home/runner/.config/discord
+          sudo rm -rfdv /opt/Discord
+          sudo rm -v /usr/bin/Discord
 
   publish:
     name: publish plugins

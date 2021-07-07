@@ -22,8 +22,8 @@ async function downloadAsar() {
   }
   catch (err) {
     console.error(`❌ Failed to download package ${downloadUrl}`);
-    console.error(`❌ ${err.message}`);
-    throw err;
+    console.error(`❌ ${err.message}\n${err.stack}`);
+    throw "not funny";
   }
 }
 
