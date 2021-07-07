@@ -114,9 +114,10 @@ jobs:
       - name: uninstall discord
         if: ${{ always() }}
         run: |
-          rm -rfdv /home/runner/.config/discord
-          sudo rm -rfdv /opt/Discord
-          sudo rm -v /usr/bin/Discord
+          sudo killall -wv -9 Discord
+          rm -rf /home/runner/.config/discord
+          sudo rm -rf /opt/Discord
+          sudo rm /usr/bin/Discord
 
   publish:
     name: publish plugins
