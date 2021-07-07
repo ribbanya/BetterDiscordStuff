@@ -95,6 +95,7 @@ jobs:
       - name: install BetterDiscord
         run: |
           DISCORD_HOST=$(grep -m 1 ^Discord module-download.log | cut -d ' ' -f 2)
+          sudo killall -wv -9 Discord
           echo 'require("/home/runner/.config/BetterDiscord/data/betterdiscord.asar");module.exports=require("./core.asar");' \
             > '/home/runner/.config/discord/'"$DISCORD_HOST"'/modules/discord_desktop_core/index.js'
           echo '✅ Injection successful'
